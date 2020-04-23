@@ -13,7 +13,7 @@ export type Config = {
   optionMergeStrategies: { [key: string]: Function };
   silent: boolean;
   productionTip: boolean;
-  performance: boolean;
+  performance: boolean; // 性能追踪模式
   devtools: boolean;
   errorHandler: ?(err: Error, vm: Component, info: string) => void;
   warnHandler: ?(msg: string, vm: Component, trace: string) => void;

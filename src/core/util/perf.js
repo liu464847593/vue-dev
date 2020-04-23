@@ -4,11 +4,11 @@ export let mark
 export let measure
 
 if (process.env.NODE_ENV !== 'production') {
-  const perf = inBrowser && window.performance
+  const perf = inBrowser && window.performance  // 网页访问某些函数来测量网页和Web应用程序的性能
   /* istanbul ignore if */
   if (
     perf &&
-    perf.mark &&
+    perf.mark &&  // 用来多次记录时间
     perf.measure &&
     perf.clearMarks &&
     perf.clearMeasures
