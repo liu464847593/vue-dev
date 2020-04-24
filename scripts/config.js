@@ -9,6 +9,9 @@ const version = process.env.VERSION || require('../package.json').version
 const weexVersion = process.env.WEEX_VERSION || require('../packages/weex-vue-framework/package.json').version
 const featureFlags = require('./feature-flags')
 
+/**
+ * 会生成头部的注释
+ */
 const banner =
   '/*!\n' +
   ` * Vue.js v${version}\n` +
@@ -38,9 +41,9 @@ const resolve = p => {
 const builds = {
   // Runtime only (CommonJS). Used by bundlers e.g. Webpack & Browserify
   'web-runtime-cjs-dev': {
-    entry: resolve('web/entry-runtime.js'),
-    dest: resolve('dist/vue.runtime.common.dev.js'),
-    format: 'cjs',
+    entry: resolve('web/entry-runtime.js'), // 入口文件
+    dest: resolve('dist/vue.runtime.common.dev.js'), // 构建后的地址
+    format: 'cjs', // 格式
     env: 'development',
     banner
   },
