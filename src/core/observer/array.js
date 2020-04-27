@@ -5,7 +5,7 @@
 
 import { def } from '../util/index'
 
-const arrayProto = Array.prototype
+const arrayProto = Array.prototype // 定义了一个数组的拦截器
 export const arrayMethods = Object.create(arrayProto)
 
 const methodsToPatch = [
@@ -20,6 +20,7 @@ const methodsToPatch = [
 
 /**
  * Intercept mutating methods and emit events
+ * 拦截变异方法并发出事件
  */
 methodsToPatch.forEach(function (method) {
   // cache original method
@@ -28,7 +29,7 @@ methodsToPatch.forEach(function (method) {
     const result = original.apply(this, args)
     const ob = this.__ob__
     let inserted
-    switch (method) {
+    switch (method) { // 获取新增数组元素
       case 'push':
       case 'unshift':
         inserted = args
@@ -37,8 +38,8 @@ methodsToPatch.forEach(function (method) {
         inserted = args.slice(2)
         break
     }
-    if (inserted) ob.observeArray(inserted)
-    // notify change
+    if (inserted) ob.observeArray(inserted) // 将新增元素转为响应式
+    // notify change  向依赖发送消息
     ob.dep.notify()
     return result
   })

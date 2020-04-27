@@ -44,12 +44,12 @@ export class Observer {
     this.value = value
     this.dep = new Dep()
     this.vmCount = 0
-    def(value, '__ob__', this)
+    def(value, '__ob__', this) // __ob__ 就是当前Observer实例，标记是否被Observer转成响应式数据
     if (Array.isArray(value)) {
-      if (hasProto) {
+      if (hasProto) { // 有就覆盖原型
         protoAugment(value, arrayMethods)
       } else {
-        copyAugment(value, arrayMethods, arrayKeys)
+        copyAugment(value, arrayMethods, arrayKeys) //不能使用__proto__就直接设置到被侦测数组上
       }
       this.observeArray(value)
     } else {
@@ -72,6 +72,7 @@ export class Observer {
 
   /**
    * Observe a list of Array items.
+   * 侦测Array中的每一项
    */
   observeArray (items: Array<any>) {
     for (let i = 0, l = items.length; i < l; i++) {
@@ -108,6 +109,9 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
  * Attempt to create an observer instance for a value,
  * returns the new observer if successfully observed,
  * or the existing observer if the value already has one.
+ * 尝试为value创建一个Observer实例
+ * 如果创建成功，直接返回新创建的Observer实例
+ * 如果value已经存在一个Observer实例，则直接返回
  */
 export function observe (value: any, asRootData: ?boolean): Observer | void {
   if (!isObject(value) || value instanceof VNode) {
@@ -166,7 +170,7 @@ export function defineReactive (
         if (childOb) {
           childOb.dep.depend()
           if (Array.isArray(value)) {
-            dependArray(value)
+            dependArray(value) // 为数组收集依赖
           }
         }
       }
