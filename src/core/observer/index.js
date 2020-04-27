@@ -33,6 +33,7 @@ export function toggleObserving (value: boolean) {
  * object. Once attached, the observer converts the target
  * object's property keys into getter/setters that
  * collect dependencies and dispatch updates.
+ * 将一个数据内的所有属性包括子属性转化成getter/setter形式并追踪变化
  */
 export class Observer {
   value: any;
@@ -60,6 +61,7 @@ export class Observer {
    * Walk through all properties and convert them into
    * getter/setters. This method should only be called when
    * value type is Object.
+   * 会将每个属性转换成getter/setter形式，只有在是对象的时候被调用
    */
   walk (obj: Object) {
     const keys = Object.keys(obj)
