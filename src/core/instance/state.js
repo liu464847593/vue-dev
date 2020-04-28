@@ -361,7 +361,7 @@ export function stateMixin (Vue: Class<Component>) {
         handleError(error, vm, `callback for immediate watcher "${watcher.expression}"`)
       }
     }
-    return function unwatchFn () {
+    return function unwatchFn () { // 取消观察数据
       watcher.teardown()
     }
   }

@@ -70,13 +70,13 @@ export default class Watcher {
     this.dirty = this.lazy // for lazy watchers
     this.deps = []
     this.newDeps = []
-    this.depIds = new Set()
+    this.depIds = new Set() // 判断当前Watcher 已经订阅了该dep则不会重复订阅
     this.newDepIds = new Set()
     this.expression = process.env.NODE_ENV !== 'production'
       ? expOrFn.toString()
       : ''
     // parse expression for getter
-    if (typeof expOrFn === 'function') {
+    if (typeof expOrFn === 'function') { // 不只可以动态返回数据，其中读取的所有数据也都会被Watcher观察
       this.getter = expOrFn
     } else {
       this.getter = parsePath(expOrFn)
@@ -128,10 +128,10 @@ export default class Watcher {
   addDep (dep: Dep) {
     const id = dep.id
     if (!this.newDepIds.has(id)) {
-      this.newDepIds.add(id)
-      this.newDeps.push(dep)
+      this.newDepIds.add(id) // 记录当前Watcher已经订阅了这个Dep
+      this.newDeps.push(dep) // 记录自己都订阅了哪些Dep
       if (!this.depIds.has(id)) {
-        dep.addSub(this)
+        dep.addSub(this) // 将自己订阅到Dep
       }
     }
   }
@@ -224,6 +224,7 @@ export default class Watcher {
 
   /**
    * Remove self from all dependencies' subscriber list.
+   * 从所有依赖项的Dep列表中将自己移除
    */
   teardown () {
     if (this.active) {
