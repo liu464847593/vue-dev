@@ -246,7 +246,7 @@ export function del (target: Array<any> | Object, key: any) {
   ) {
     warn(`Cannot delete reactive property on undefined, null, or primitive value: ${(target: any)}`)
   }
-  if (Array.isArray(target) && isValidArrayIndex(key)) {
+  if (Array.isArray(target) && isValidArrayIndex(key)) { // 处理数组
     target.splice(key, 1)
     return
   }
@@ -258,6 +258,7 @@ export function del (target: Array<any> | Object, key: any) {
     )
     return
   }
+  // 如果不是target自身属性，则终止程序运行
   if (!hasOwn(target, key)) {
     return
   }
@@ -265,7 +266,7 @@ export function del (target: Array<any> | Object, key: any) {
   if (!ob) {
     return
   }
-  ob.dep.notify()
+  ob.dep.notify() // 响应式数组手动向依赖发送变化通知
 }
 
 /**
