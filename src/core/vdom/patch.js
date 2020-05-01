@@ -358,7 +358,7 @@ export function createPatchFunction (backend) {
     }
   }
 
-  function removeVnodes (vnodes, startIdx, endIdx) {
+  function removeVnodes (vnodes, startIdx, endIdx) {// 删除一组指定节点
     for (; startIdx <= endIdx; ++startIdx) {
       const ch = vnodes[startIdx]
       if (isDef(ch)) {
@@ -366,7 +366,7 @@ export function createPatchFunction (backend) {
           removeAndInvokeRemoveHook(ch)
           invokeDestroyHook(ch)
         } else { // Text node
-          removeNode(ch.elm)
+          removeNode(ch.elm) // 删除单个节点
         }
       }
     }
