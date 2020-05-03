@@ -18,7 +18,7 @@ const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s
 const dynamicArgAttribute = /^\s*((?:v-[\w-]+:|@|:|#)\[[^=]+\][^\s"'<>\/=]*)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/
 const ncname = `[a-zA-Z_][\\-\\.0-9_a-zA-Z${unicodeRegExp.source}]*`
 const qnameCapture = `((?:${ncname}\\:)?${ncname})`
-const startTagOpen = new RegExp(`^<${qnameCapture}`)
+const startTagOpen = new RegExp(`^<${qnameCapture}`) // 匹配标签开头的模版
 const startTagClose = /^\s*(\/?)>/
 const endTag = new RegExp(`^<\\/${qnameCapture}[^>]*>`)
 const doctype = /^<!DOCTYPE [^>]+>/i
@@ -64,7 +64,7 @@ export function parseHTML (html, options) {
     if (!lastTag || !isPlainTextElement(lastTag)) {
       let textEnd = html.indexOf('<')
       if (textEnd === 0) {
-        // Comment:
+        // Comment:  截取注释
         if (comment.test(html)) {
           const commentEnd = html.indexOf('-->')
 
@@ -77,7 +77,7 @@ export function parseHTML (html, options) {
           }
         }
 
-        // http://en.wikipedia.org/wiki/Conditional_comment#Downlevel-revealed_conditional_comment
+        // http://en.wikipedia.org/wiki/Conditional_comment#Downlevel-revealed_conditional_comment 截取条件注释
         if (conditionalComment.test(html)) {
           const conditionalEnd = html.indexOf(']>')
 
@@ -87,14 +87,14 @@ export function parseHTML (html, options) {
           }
         }
 
-        // Doctype:
+        // Doctype: 截取Doctype
         const doctypeMatch = html.match(doctype)
         if (doctypeMatch) {
           advance(doctypeMatch[0].length)
           continue
         }
 
-        // End tag:
+        // End tag: 截取结束标签
         const endTagMatch = html.match(endTag)
         if (endTagMatch) {
           const curIndex = index
@@ -103,7 +103,7 @@ export function parseHTML (html, options) {
           continue
         }
 
-        // Start tag:
+        // Start tag: 截取开始标签
         const startTagMatch = parseStartTag()
         if (startTagMatch) {
           handleStartTag(startTagMatch)
@@ -115,6 +115,7 @@ export function parseHTML (html, options) {
       }
 
       let text, rest, next
+      // 截取文本
       if (textEnd >= 0) {
         rest = html.slice(textEnd)
         while (
@@ -123,7 +124,7 @@ export function parseHTML (html, options) {
           !comment.test(rest) &&
           !conditionalComment.test(rest)
         ) {
-          // < in plain text, be forgiving and treat it as text
+          // < in plain text, be forgiving and treat it as text 如果< 在纯文本中，视为纯文本
           next = rest.indexOf('<', 1)
           if (next < 0) break
           textEnd += next
@@ -131,7 +132,7 @@ export function parseHTML (html, options) {
         }
         text = html.substring(0, textEnd)
       }
-
+      // 整个模版都是纯文本
       if (textEnd < 0) {
         text = html
       }
@@ -139,7 +140,7 @@ export function parseHTML (html, options) {
       if (text) {
         advance(text.length)
       }
-
+      // 触发钩子函数
       if (options.chars && text) {
         options.chars(text, index - text.length, index)
       }
@@ -185,6 +186,7 @@ export function parseHTML (html, options) {
   }
 
   function parseStartTag () {
+    // 解析标签名，判断模版是否符合开始标签的特征
     const start = html.match(startTagOpen)
     if (start) {
       const match = {
@@ -193,6 +195,7 @@ export function parseHTML (html, options) {
         start: index
       }
       advance(start[0].length)
+      // 解析标签属性
       let end, attr
       while (!(end = html.match(startTagClose)) && (attr = html.match(dynamicArgAttribute) || html.match(attribute))) {
         attr.start = index
@@ -200,6 +203,7 @@ export function parseHTML (html, options) {
         attr.end = index
         match.attrs.push(attr)
       }
+      // 判断该标签是否是自闭合标签
       if (end) {
         match.unarySlash = end[1]
         advance(end[0].length)
