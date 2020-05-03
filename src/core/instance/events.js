@@ -81,7 +81,7 @@ export function eventsMixin (Vue: Class<Component>) { // 挂载$on,$once,$off,$e
 
   Vue.prototype.$off = function (event?: string | Array<string>, fn?: Function): Component {
     const vm: Component = this
-    // all
+    // all  移除所有事件监听器
     if (!arguments.length) {
       vm._events = Object.create(null)
       return vm

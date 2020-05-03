@@ -55,7 +55,7 @@ export function initLifecycle (vm: Component) {
   vm._isBeingDestroyed = false
 }
 
-export function lifecycleMixin (Vue: Class<Component>) {
+export function lifecycleMixin (Vue: Class<Component>) {  // 挂载$forceUpdate,$destroy
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this
     const prevEl = vm.$el
@@ -101,12 +101,12 @@ export function lifecycleMixin (Vue: Class<Component>) {
     }
     callHook(vm, 'beforeDestroy')
     vm._isBeingDestroyed = true
-    // remove self from parent
+    // remove self from parent 删除自己与父级的连接
     const parent = vm.$parent
     if (parent && !parent._isBeingDestroyed && !vm.$options.abstract) {
       remove(parent.$children, vm)
     }
-    // teardown watchers
+    // teardown watchers 从watcher监听的所有状态的依赖列表中移除watcher
     if (vm._watcher) {
       vm._watcher.teardown()
     }
@@ -121,11 +121,11 @@ export function lifecycleMixin (Vue: Class<Component>) {
     }
     // call the last hook...
     vm._isDestroyed = true
-    // invoke destroy hooks on current rendered tree
+    // invoke destroy hooks on current rendered tree 在vnode树上触发destroy钩子函数解绑指令
     vm.__patch__(vm._vnode, null)
-    // fire destroyed hook
+    // fire destroyed hook  触发destroyed钩子函数
     callHook(vm, 'destroyed')
-    // turn off all instance listeners.
+    // turn off all instance listeners. 移除所有事件监听器
     vm.$off()
     // remove __vue__ reference
     if (vm.$el) {

@@ -58,7 +58,7 @@ export function setCurrentRenderingInstance (vm: Component) {
   currentRenderingInstance = vm
 }
 
-export function renderMixin (Vue: Class<Component>) {
+export function renderMixin (Vue: Class<Component>) { // 挂载$nextTick
   // install runtime convenience helpers
   installRenderHelpers(Vue.prototype)
 
