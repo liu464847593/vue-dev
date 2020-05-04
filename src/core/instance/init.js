@@ -36,7 +36,7 @@ export function initMixin (Vue: Class<Component>) {
       initInternalComponent(vm, options)
     } else {
       vm.$options = mergeOptions(
-        resolveConstructorOptions(vm.constructor),
+        resolveConstructorOptions(vm.constructor), //获取当前实例的options及所有父级实例构造函数的options
         options || {},
         vm
       )
@@ -52,7 +52,7 @@ export function initMixin (Vue: Class<Component>) {
     initLifecycle(vm) // 初始化生命周期
     initEvents(vm) // 初始化事件
     initRender(vm) // 初始化渲染
-    callHook(vm, 'beforeCreate')
+    callHook(vm, 'beforeCreate') // 用来触发生命周期
     initInjections(vm) // resolve injections before data/props
     initState(vm) // 初始化状态 data,watch ...
     initProvide(vm) // resolve provide after data/props
