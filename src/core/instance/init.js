@@ -18,6 +18,7 @@ export function initMixin (Vue: Class<Component>) {
     // a uid
     vm._uid = uid++
 
+    // 主要测试性能
     let startTag, endTag
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
@@ -26,10 +27,10 @@ export function initMixin (Vue: Class<Component>) {
       mark(startTag)
     }
 
-    // a flag to avoid this being observed
+    // a flag to avoid this being observed  防止this被observed实例化
     vm._isVue = true
     // merge options
-    if (options && options._isComponent) {
+    if (options && options._isComponent) { // 判断是否是组件
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
