@@ -268,7 +268,7 @@ const defaultStrat = function (parentVal: any, childVal: any): any {
 }
 
 /**
- * Validate component names
+ * Validate component names 检查组件名称是否合法
  */
 function checkComponents (options: Object) {
   for (const key in options.components) {
