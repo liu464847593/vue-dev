@@ -24,7 +24,4 @@
 |   ├── shared             # 整个项目的公用工具代码  
 |-- test                   # 测试用例
 |-- types                  # 使用TypeScript定义的类型声明，并且包含了测试文件
-|-- packages               # vue-server-rendar 和vue-template-compiler,它们作为单独的NPM包发布   
-|-- test                   # 所有的测试代码    
-|-- .flowconfig flow配置文件
 ```
