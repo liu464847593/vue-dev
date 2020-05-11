@@ -439,6 +439,7 @@ export function mergeOptions (
  * Resolve an asset.
  * This function is used because child instances need access
  * to assets defined in its ancestor chain.
+ * 查找过滤器
  */
 export function resolveAsset (
   options: Object,
@@ -447,17 +448,17 @@ export function resolveAsset (
   warnMissing?: boolean
 ): any {
   /* istanbul ignore if */
-  if (typeof id !== 'string') {
+  if (typeof id !== 'string') { //必须要是字符串
     return
   }
   const assets = options[type]
-  // check local registration variations first
-  if (hasOwn(assets, id)) return assets[id]
-  const camelizedId = camelize(id)
-  if (hasOwn(assets, camelizedId)) return assets[camelizedId]
-  const PascalCaseId = capitalize(camelizedId)
-  if (hasOwn(assets, PascalCaseId)) return assets[PascalCaseId]
-  // fallback to prototype chain
+  // check local registration variations first  检查本地注册变动
+  if (hasOwn(assets, id)) return assets[id] // 检查自身是否存在id
+  const camelizedId = camelize(id) // 驼峰化id
+  if (hasOwn(assets, camelizedId)) return assets[camelizedId] // 检查自身是否存在驼峰化id
+  const PascalCaseId = capitalize(camelizedId) // 首字母大写
+  if (hasOwn(assets, PascalCaseId)) return assets[PascalCaseId] // // 检查自身是否存在首字母大写id
+  // fallback to prototype chain 检查原型链是否有id
   const res = assets[id] || assets[camelizedId] || assets[PascalCaseId]
   if (process.env.NODE_ENV !== 'production' && warnMissing && !res) {
     warn(

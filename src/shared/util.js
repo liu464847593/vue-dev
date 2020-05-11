@@ -265,7 +265,7 @@ export const no = (a?: any, b?: any, c?: any) => false
 /* eslint-enable no-unused-vars */
 
 /**
- * Return the same value.
+ * Return the same value. 返回相同值
  */
 export const identity = (_: any) => _
 
