@@ -19,26 +19,26 @@ function updateDirectives (oldVnode: VNodeWithData, vnode: VNodeWithData) {
 }
 
 function _update (oldVnode, vnode) {
-  const isCreate = oldVnode === emptyNode
-  const isDestroy = vnode === emptyNode
-  const oldDirs = normalizeDirectives(oldVnode.data.directives, oldVnode.context)
-  const newDirs = normalizeDirectives(vnode.data.directives, vnode.context)
+  const isCreate = oldVnode === emptyNode // 判断虚拟节点是否是一个新创建的节点
+  const isDestroy = vnode === emptyNode // 当新虚拟节点不存在而旧虚拟节点存在时为真
+  const oldDirs = normalizeDirectives(oldVnode.data.directives, oldVnode.context) // 旧指令集合，指oldVnode中保存的指令
+  const newDirs = normalizeDirectives(vnode.data.directives, vnode.context) // 新指令集合，指vnode中保存的指令
 
-  const dirsWithInsert = []
-  const dirsWithPostpatch = []
+  const dirsWithInsert = [] // 其中保存需要触发inserted指令钩子函数的指令列表
+  const dirsWithPostpatch = [] // 其中保存需要触发componentUpdated钩子函数的指令列表
 
   let key, oldDir, dir
   for (key in newDirs) {
     oldDir = oldDirs[key]
     dir = newDirs[key]
     if (!oldDir) {
-      // new directive, bind
+      // 新指令,触发bind
       callHook(dir, 'bind', vnode, oldVnode)
-      if (dir.def && dir.def.inserted) {
+      if (dir.def && dir.def.inserted) { // 注册时设置了inserted方法
         dirsWithInsert.push(dir)
       }
     } else {
-      // existing directive, update
+      // 指令已存在，触发update
       dir.oldValue = oldDir.value
       dir.oldArg = oldDir.arg
       callHook(dir, 'update', vnode, oldVnode)
@@ -55,7 +55,7 @@ function _update (oldVnode, vnode) {
       }
     }
     if (isCreate) {
-      mergeVNodeHook(vnode, 'insert', callInsert)
+      mergeVNodeHook(vnode, 'insert', callInsert) // 等到元素被插入到父节点在执行指令的insert
     } else {
       callInsert()
     }
@@ -81,7 +81,7 @@ function _update (oldVnode, vnode) {
 
 const emptyModifiers = Object.create(null)
 
-function normalizeDirectives (
+function normalizeDirectives ( // 将模版中使用的指令从用户注册的自定义指令集合中取出来
   dirs: ?Array<VNodeDirective>,
   vm: Component
 ): { [key: string]: VNodeDirective } {
@@ -108,6 +108,14 @@ function getRawDirName (dir: VNodeDirective): string {
   return dir.rawName || `${dir.name}.${Object.keys(dir.modifiers || {}).join('.')}`
 }
 
+/**
+ * 找出指定对应钩子函数的方法，如果存在就执行它
+ * @param dir 指定对象
+ * @param hook 将要触发的钩子函数名
+ * @param vnode 新虚拟节点
+ * @param oldVnode 旧虚拟节点
+ * @param isDestroy 当新虚拟节点不存在而旧虚拟节点存在时为真
+ */
 function callHook (dir, hook, vnode, oldVnode, isDestroy) {
   const fn = dir.def && dir.def[hook]
   if (fn) {

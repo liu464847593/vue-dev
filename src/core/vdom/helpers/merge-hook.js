@@ -4,7 +4,7 @@ import VNode from '../vnode'
 import { createFnInvoker } from './update-listeners'
 import { remove, isDef, isUndef, isTrue } from 'shared/util'
 
-export function mergeVNodeHook (def: Object, hookKey: string, hook: Function) {
+export function mergeVNodeHook (def: Object, hookKey: string, hook: Function) { // 将一个钩子函数与虚拟节点现有的钩子函数合并在一起，当虚拟DOM触发钩子函数时，新增的钩子函数也会执行
   if (def instanceof VNode) {
     def = def.data.hook || (def.data.hook = {})
   }
