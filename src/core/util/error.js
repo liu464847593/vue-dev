@@ -13,14 +13,14 @@ export function handleError (err: Error, vm: any, info: string) {
   try {
     if (vm) {
       let cur = vm
-      while ((cur = cur.$parent)) {
+      while ((cur = cur.$parent)) { // 不断遍历父组件触发errorCaptured
         const hooks = cur.$options.errorCaptured
         if (hooks) {
           for (let i = 0; i < hooks.length; i++) {
             try {
               const capture = hooks[i].call(cur, err, vm, info) === false
-              if (capture) return
-            } catch (e) {
+              if (capture) return // 阻止错误继续向上传播
+            } catch (e) { // 自身错误
               globalHandleError(e, cur, 'errorCaptured hook')
             }
           }
