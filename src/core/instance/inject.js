@@ -16,7 +16,7 @@ export function initProvide (vm: Component) {
 export function initInjections (vm: Component) {
   const result = resolveInject(vm.$options.inject, vm)
   if (result) {
-    toggleObserving(false)
+    toggleObserving(false) // 通知defineReactive函数不要将内容转换成响应式
     Object.keys(result).forEach(key => {
       /* istanbul ignore else */
       if (process.env.NODE_ENV !== 'production') {
@@ -36,13 +36,14 @@ export function initInjections (vm: Component) {
   }
 }
 
-export function resolveInject (inject: any, vm: Component): ?Object {
+export function resolveInject (inject: any, vm: Component): ?Object { // 通过用户配置的inject，自底向上搜索可用的注入内容，并将搜索结果返回
   if (inject) {
     // inject is :any because flow is not smart enough to figure out cached
     const result = Object.create(null)
+    // 是否支持Symbol
     const keys = hasSymbol
-      ? Reflect.ownKeys(inject)
-      : Object.keys(inject)
+      ? Reflect.ownKeys(inject) // 可以读出Symbol类型属性
+      : Object.keys(inject) // 读不出Symbol类型属性
 
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i]
@@ -57,7 +58,7 @@ export function resolveInject (inject: any, vm: Component): ?Object {
         }
         source = source.$parent
       }
-      if (!source) {
+      if (!source) { // 如果所有祖先组件是咧中都搜索不到注入内容时，如果用户设置了默认值，就使用默认值
         if ('default' in inject[key]) {
           const provideDefault = inject[key].default
           result[key] = typeof provideDefault === 'function'
