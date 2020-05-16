@@ -15,7 +15,7 @@ export function initEvents (vm: Component) {
   // init parent attached events 将父组件模版注册事件放在当前组件实例listeners中
   const listeners = vm.$options._parentListeners
   if (listeners) {
-    updateComponentListeners(vm, listeners)
+    updateComponentListeners(vm, listeners) // 将父组件向自组件注册的事件注册到自组件实例中
   }
 }
 

@@ -10,7 +10,7 @@ import {
   isTrue,
   isPlainObject
 } from 'shared/util'
-
+// 将事件修饰符解析出来
 const normalizeEvent = cached((name: string): {
   name: string,
   once: boolean,
@@ -50,7 +50,7 @@ export function createFnInvoker (fns: Function | Array<Function>, vm: ?Component
   return invoker
 }
 
-export function updateListeners (
+export function updateListeners ( // 对比listeners和oldListeners的不同
   on: Object,
   oldOn: Object,
   add: Function,
