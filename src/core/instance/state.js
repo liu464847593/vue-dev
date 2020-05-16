@@ -123,7 +123,7 @@ function initData (vm: Component) {
       vm
     )
   }
-  // proxy data on instance
+  // proxy data on instance 将data代理到vue.js实例上
   const keys = Object.keys(data)
   const props = vm.$options.props
   const methods = vm.$options.methods
