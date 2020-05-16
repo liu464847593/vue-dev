@@ -15,7 +15,7 @@ function Vue (options) {
 }
 
 initMixin(Vue) // 将_init挂载到vue构造函数的原型上
-stateMixin(Vue)
+stateMixin(Vue) // 挂载 $watch,$set,$delete
 eventsMixin(Vue)
 lifecycleMixin(Vue)
 renderMixin(Vue)

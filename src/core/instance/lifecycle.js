@@ -87,7 +87,7 @@ export function lifecycleMixin (Vue: Class<Component>) {  // 挂载$forceUpdate,
     // updated in a parent's updated hook.
   }
 
-  Vue.prototype.$forceUpdate = function () {
+  Vue.prototype.$forceUpdate = function () {  // 让实例重新渲染
     const vm: Component = this
     if (vm._watcher) {
       vm._watcher.update()
