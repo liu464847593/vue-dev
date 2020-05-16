@@ -24,10 +24,10 @@ export function validateProp (
   propsData: Object,
   vm?: Component
 ): any {
-  const prop = propOptions[key]
-  const absent = !hasOwn(propsData, key)
-  let value = propsData[key]
-  // boolean casting
+  const prop = propOptions[key] // 保存当前key的props选项
+  const absent = !hasOwn(propsData, key) // 当前key在用户提供的props选项中是否存在
+  let value = propsData[key] // 当前key在props中的数据
+  // boolean casting 处理布尔类型的props
   const booleanIndex = getTypeIndex(Boolean, prop.type)
   if (booleanIndex > -1) {
     if (absent && !hasOwn(prop, 'default')) {
@@ -41,11 +41,11 @@ export function validateProp (
       }
     }
   }
-  // check default value
+  // check default value 检查默认值
   if (value === undefined) {
     value = getPropDefaultValue(vm, prop, key)
     // since the default value is a fresh copy,
-    // make sure to observe it.
+    // make sure to observe it.  默认值是新数据，需要转为响应式
     const prevShouldObserve = shouldObserve
     toggleObserving(true)
     observe(value)
@@ -96,6 +96,7 @@ function getPropDefaultValue (vm: ?Component, prop: PropOptions, key: string): a
 
 /**
  * Assert whether a prop is valid.
+ * 断言 prop是否有效
  */
 function assertProp (
   prop: PropOptions,
