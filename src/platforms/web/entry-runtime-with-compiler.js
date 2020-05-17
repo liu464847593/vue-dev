@@ -33,6 +33,7 @@ Vue.prototype.$mount = function ( //声明了compiler版本的mount方法
   // resolve template/el and convert to render function
   // 没有render转render，模版最终还是会编译成render方法
   if (!options.render) {
+    // 获取模版相关逻辑
     let template = options.template
     if (template) {
       if (typeof template === 'string') {
