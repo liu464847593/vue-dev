@@ -27,12 +27,13 @@ export function initExtend (Vue: GlobalAPI) {
 
     const name = extendOptions.name || Super.options.name
     if (process.env.NODE_ENV !== 'production' && name) {
-      validateComponentName(name)
+      validateComponentName(name) // 校验name
     }
 
-    const Sub = function VueComponent (options) {
+    const Sub = function VueComponent (options) { // 创建子类
       this._init(options)
     }
+    // 继承原型
     Sub.prototype = Object.create(Super.prototype)
     Sub.prototype.constructor = Sub
     Sub.cid = cid++
@@ -74,13 +75,13 @@ export function initExtend (Vue: GlobalAPI) {
     Sub.extendOptions = extendOptions
     Sub.sealedOptions = extend({}, Sub.options)
 
-    // cache constructor
+    // 缓存构造函数
     cachedCtors[SuperId] = Sub
     return Sub
   }
 }
 
-function initProps (Comp) {
+function initProps (Comp) { // 将key代理到_props中
   const props = Comp.options.props
   for (const key in props) {
     proxy(Comp.prototype, `_props`, key)
