@@ -7,10 +7,10 @@ import { isIE, isIOS, isNative } from './env'
 
 export let isUsingMicroTask = false
 
-const callbacks = []
-let pending = false
+const callbacks = [] // 存储用户注册回调
+let pending = false // 是否已经向任务队列添加了一个任务
 
-function flushCallbacks () {
+function flushCallbacks () { // 被注册的任务，一轮事件循环只会执行一次
   pending = false
   const copies = callbacks.slice(0)
   callbacks.length = 0
@@ -86,7 +86,7 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
 
 export function nextTick (cb?: Function, ctx?: Object) {
   let _resolve
-  callbacks.push(() => {
+  callbacks.push(() => { // 把回调函数添加到callbacks
     if (cb) {
       try {
         cb.call(ctx)
