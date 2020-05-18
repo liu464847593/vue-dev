@@ -22,9 +22,9 @@ export function optimize (root: ?ASTElement, options: CompilerOptions) {
   if (!root) return
   isStaticKey = genStaticKeysCached(options.staticKeys || '')
   isPlatformReservedTag = options.isReservedTag || no
-  // first pass: mark all non-static nodes.
+  // first pass: mark all non-static nodes. 标记所有静态节点
   markStatic(root)
-  // second pass: mark static roots.
+  // second pass: mark static roots. 标记所有静态根节点
   markStaticRoots(root, false)
 }
 
@@ -97,20 +97,20 @@ function markStaticRoots (node: ASTNode, isInFor: boolean) {
   }
 }
 
-function isStatic (node: ASTNode): boolean {
-  if (node.type === 2) { // expression
+function isStatic (node: ASTNode): boolean { // 判断是否是静态节点
+  if (node.type === 2) { // expression 带变量的动态文本节点
     return false
   }
-  if (node.type === 3) { // text
+  if (node.type === 3) { // text  不带变量的纯文本节点
     return true
   }
   return !!(node.pre || (
-    !node.hasBindings && // no dynamic bindings
+    !node.hasBindings && // 没有动态绑定
     !node.if && !node.for && // not v-if or v-for or v-else
-    !isBuiltInTag(node.tag) && // not a built-in
-    isPlatformReservedTag(node.tag) && // not a component
-    !isDirectChildOfTemplateFor(node) &&
-    Object.keys(node).every(isStaticKey)
+    !isBuiltInTag(node.tag) && // 不是内置标签（slot,component）
+    isPlatformReservedTag(node.tag) && // 不是组件,必须是保留标签
+    !isDirectChildOfTemplateFor(node) && // 当前节点的父节点不能带v-for指令的template标签
+    Object.keys(node).every(isStaticKey) // 节点不存在动态节点才有的属性
   ))
 }
 
