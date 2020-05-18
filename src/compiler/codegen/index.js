@@ -216,7 +216,7 @@ export function genFor (
     '})'
 }
 
-export function genData (el: ASTElement, state: CodegenState): string {
+export function genData (el: ASTElement, state: CodegenState): string { // 获取data
   let data = '{'
 
   // directives first.
@@ -460,7 +460,7 @@ function genScopedSlot (
   return `{key:${el.slotTarget || `"default"`},fn:${fn}${reverseProxy}}`
 }
 
-export function genChildren (
+export function genChildren ( // 获取children
   el: ASTElement,
   state: CodegenState,
   checkSkip?: boolean,
@@ -532,14 +532,14 @@ function genNode (node: ASTNode, state: CodegenState): string {
   }
 }
 
-export function genText (text: ASTText | ASTExpression): string {
+export function genText (text: ASTText | ASTExpression): string { // 生成文本节点：动态文本用expression，静态文本用text
   return `_v(${text.type === 2
     ? text.expression // no need for () because already wrapped in _s()
     : transformSpecialNewlines(JSON.stringify(text.text))
   })`
 }
 
-export function genComment (comment: ASTText): string {
+export function genComment (comment: ASTText): string { // 生成注释节点
   return `_e(${JSON.stringify(comment.text)})`
 }
 
