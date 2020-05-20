@@ -96,7 +96,7 @@ export function createPatchFunction (backend) {
     return remove
   }
 
-  function removeNode (el) {
+  function removeNode (el) {// 删除单个节点
     const parent = nodeOps.parentNode(el)
     // element may have already been removed due to v-html / v-text
     if (isDef(parent)) {
