@@ -228,7 +228,7 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     )
     return val
   }
-  if (!ob) {
+  if (!ob) { // 不是响应式
     target[key] = val
     return val
   }
