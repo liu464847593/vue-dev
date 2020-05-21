@@ -113,7 +113,7 @@ export default class Watcher {
     } finally {
       // "touch" every property so they are all tracked as
       // dependencies for deep watching
-      if (this.deep) {
+      if (this.deep) { // 递归收集依赖
         traverse(value)
       }
       popTarget()
@@ -124,6 +124,7 @@ export default class Watcher {
 
   /**
    * Add a dependency to this directive.
+   * 记录订阅过的Dep
    */
   addDep (dep: Dep) {
     const id = dep.id

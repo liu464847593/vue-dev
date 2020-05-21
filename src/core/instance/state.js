@@ -355,7 +355,7 @@ export function stateMixin (Vue: Class<Component>) { // 挂载$watch,$set,%delet
     options = options || {}
     options.user = true
     const watcher = new Watcher(vm, expOrFn, cb, options)
-    if (options.immediate) {
+    if (options.immediate) { // immediate 则立即执行函数
       try {
         cb.call(vm, watcher.value)
       } catch (error) {

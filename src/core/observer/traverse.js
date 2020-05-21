@@ -20,7 +20,7 @@ export function traverse (val: any) {
 function _traverse (val: any, seen: SimpleSet) {
   let i, keys
   const isA = Array.isArray(val)
-  if ((!isA && !isObject(val)) || Object.isFrozen(val) || val instanceof VNode) {
+  if ((!isA && !isObject(val)) || Object.isFrozen(val) || val instanceof VNode) { // 不是数组，对象或者已被冻结
     return
   }
   if (val.__ob__) {
@@ -36,6 +36,6 @@ function _traverse (val: any, seen: SimpleSet) {
   } else {
     keys = Object.keys(val)
     i = keys.length
-    while (i--) _traverse(val[keys[i]], seen)
+    while (i--) _traverse(val[keys[i]], seen) // 循环所有的key,然后再执行一次读取操作，再递归子值
   }
 }
