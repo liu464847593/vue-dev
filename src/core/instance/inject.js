@@ -14,7 +14,7 @@ export function initProvide (vm: Component) {
 }
 
 export function initInjections (vm: Component) {
-  const result = resolveInject(vm.$options.inject, vm)
+  const result = resolveInject(vm.$options.inject, vm) // 自底向上搜索可用的注入内容并返回结果
   if (result) {
     toggleObserving(false) // 通知defineReactive函数不要将内容转换成响应式
     Object.keys(result).forEach(key => {

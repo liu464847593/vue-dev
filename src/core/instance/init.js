@@ -50,7 +50,7 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
-    initLifecycle(vm) // 初始化生命周期
+    initLifecycle(vm) // 初始化实例属性
     initEvents(vm) // 初始化事件
     initRender(vm) // 初始化渲染
     callHook(vm, 'beforeCreate') // 用来触发生命周期
